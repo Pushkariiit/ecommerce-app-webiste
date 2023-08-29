@@ -8,44 +8,44 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Configure env
+//configure env
 dotenv.config();
 
-// Database config
+//databse config
 connectDB();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-console.log(`Server.js directory: ${__dirname}`); // Debug log
-
-// REST object
+//rest object
 const app = express();
 
-// Middlewares
+//middelwares
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "./client/build")))
 
-// Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'client', 'public')));
-
-// Routes
+//routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 
-// Catch-all route for SPA routing
-app.use('*',function(req,res){
-    res.sendFile(path.join(__dirname,'client', 'public', 'index.html'));
+//rest api
+
+// app.use('*',function(req,res){
+//     res.sendFile(path.join(__dirname,"./client/build/index.html"));
+// })
+
+app.get('*', function (req, res) {
+    const index = path.join(__dirname, 'build', 'index.html');
+    res.sendFile(index);
 })
 
-// PORT
+//PORT
 const PORT = process.env.PORT || 8080;
 
-// Run listen
+//run listen
 app.listen(PORT, () => {
-    console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`.bgCyan.white);
+    console.log(
+        `Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`.bgCyan
+            .white
+    );
 });
