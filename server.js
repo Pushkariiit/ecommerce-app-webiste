@@ -9,44 +9,43 @@ import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
 import path from 'path';
 import { fileURLToPath } from 'url';
-//configure env
+
+// Configure env
 dotenv.config();
 
-//databse config
+// Database config
 connectDB();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-//rest object
+
+console.log(`Server.js directory: ${__dirname}`); // Debug log
+
+// REST object
 const app = express();
 
-//middelwares
+// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-const staticPath = path.join(__dirname, './client/build');
-// console.log(`Static Files Path: ${staticPath}`);
-app.use(express.static(staticPath));
 
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, 'client', 'public')));
 
-//routes
+// Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 
-//rest api
-
+// Catch-all route for SPA routing
 app.use('*',function(req,res){
-    res.sendFile(path.join(__dirname,'./client/build/index.html'));
+    res.sendFile(path.join(__dirname,'client', 'public', 'index.html'));
 })
 
-//PORT
+// PORT
 const PORT = process.env.PORT || 8080;
 
-//run listen
+// Run listen
 app.listen(PORT, () => {
-    console.log(
-        `Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`.bgCyan
-            .white
-    );
+    console.log(`Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`.bgCyan.white);
 });
