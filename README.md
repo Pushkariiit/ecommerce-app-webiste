@@ -11,8 +11,7 @@ o Tech stack: HTML, CSS, JavaScript, Reactjs, ExpressJs, MongoDB,BootStrap5,Brai
 
 Steps :
 [
-git clone ](https://github.com/Pushkariiit/ecommerce-app-webiste)https://github.com/Shrey-Srivastava21/movie.git
-
+git clone ]
 Install node dependencies
 
 npm install
